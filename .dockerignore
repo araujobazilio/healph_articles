@@ -1,7 +1,7 @@
-# Python
+﻿# Python
 __pycache__/
 *.py[cod]
-*$py.class
+*.class
 *.so
 .Python
 build/
@@ -19,11 +19,15 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+*.pyc
+*.pyo
+*.pyd
 
 # Virtual Environment
 venv/
 env/
 ENV/
+.venv/
 
 # IDE
 .vscode/
@@ -49,19 +53,6 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Build files
-Dockerfile
-.dockerignore
-
-# Local development
-.venv
-
-# Test files
-*.test
-.coverage
-htmlcov/
-.pytest_cache/
-
 # Jupyter Notebook
 .ipynb_checkpoints
 
@@ -70,3 +61,53 @@ htmlcov/
 .chromadb/
 /tmp/
 !/.keep
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Variaveis locais
+local_settings.py
+
+# Arquivos gerados
+*.pdf
+*.html
+
+# Diretorios de cache
+.cache/
+.mypy_cache/
+.pytest_cache/
+__pycache__/
+
+# Arquivos de configuração local
+*.local
+
+# Arquivos de ambiente de desenvolvimento
+.env.development
+.env.test
+.env.production
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
+
+# Testes
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Documentação
+_build/
+docs/_build/
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Arquivos grandes
+data/
+*.csv
+*.json
+*.xlsx
+*.db
+*.sqlite3

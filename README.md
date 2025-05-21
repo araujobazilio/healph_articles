@@ -6,10 +6,92 @@ Este projeto utiliza o framework CrewAI para criar um sistema de agentes de IA c
 
 O sistema é composto por dois agentes principais:
 
-*   **Agente Pesquisador (Health Research Specialist):** Responsável por conduzir pesquisas aprofundadas na internet sobre o tema de saúde fornecido pelo usuário. Utiliza a ferramenta DuckDuckGoSearchRun para buscar informações em fontes confiáveis.
-*   **Agente Escritor (Medical Content Creator):** Responsável por analisar os dados da pesquisa e redigir um artigo informativo, bem estruturado e acessível para o público em geral.
+* **Agente Pesquisador (Health Research Specialist):** Responsável por conduzir pesquisas aprofundadas na internet sobre o tema de saúde fornecido pelo usuário. Utiliza a ferramenta DuckDuckGoSearchRun para buscar informações em fontes confiáveis.
+* **Agente Escritor (Medical Content Creator):** Responsável por analisar os dados da pesquisa e redigir um artigo informativo, bem estruturado e acessível para o público em geral.
 
 As tarefas são executadas sequencialmente: primeiro a pesquisa, depois a escrita do artigo com base nos resultados da pesquisa.
+
+## 2. Pré-requisitos
+
+- Docker e Docker Compose instalados
+- Chave de API da OpenAI
+- Conta no Streamlit Cloud (para deploy)
+
+## 3. Configuração do Ambiente
+
+### 3.1 Variáveis de Ambiente
+
+Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+
+```
+OPENAI_API_KEY=sua_chave_aqui
+```
+
+### 3.2 Instalação Local com Docker
+
+1. Construa a imagem Docker:
+   ```bash
+   docker build -t healph-articles .
+   ```
+
+2. Execute o contêiner:
+   ```bash
+   docker run -p 8501:8501 --env-file .env healph-articles
+   ```
+
+3. Acesse o aplicativo em: http://localhost:8501
+
+## 4. Deploy no Streamlit Cloud
+
+1. Faça push do código para um repositório no GitHub
+2. Acesse o [Streamlit Cloud](https://share.streamlit.io/)
+3. Clique em "New app"
+4. Selecione o repositório e o branch
+5. Defina o "Main file path" como `streamlit_app.py`
+6. Adicione a variável de ambiente `OPENAI_API_KEY`
+7. Clique em "Deploy!"
+
+## 5. Estrutura do Projeto
+
+```
+healph_articles/
+├── .streamlit/               # Configurações do Streamlit
+│   └── config.toml
+├── app.py                    # Código principal da aplicação
+├── crewai_config.py          # Configurações personalizadas do CrewAI
+├── Dockerfile                # Configuração do Docker
+├── entrypoint.sh             # Script de inicialização
+├── requirements.txt          # Dependências do Python
+└── README.md                 # Documentação
+```
+
+## 6. Solução de Problemas
+
+### Erro de SQLite
+
+Se encontrar erros relacionados ao SQLite, tente:
+
+1. Reconstruir a imagem Docker:
+   ```bash
+   docker-compose build --no-cache
+   ```
+
+2. Limpar contêineres antigos:
+   ```bash
+   docker-compose down -v
+   ```
+
+### Erros de Dependências
+
+Se encontrar erros de dependências, tente:
+
+```bash
+docker-compose build --no-cache
+```
+
+## 7. Licença
+
+Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 ## 2. Estrutura de Arquivos
 

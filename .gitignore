@@ -22,11 +22,15 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+*.pyc
+*.pyo
+*.pyd
 
 # Virtual Environment
 venv/
 env/
 ENV/
+.venv/
 
 # IDE
 .idea/
@@ -34,9 +38,55 @@ ENV/
 *.swp
 *.swo
 
+# Git
+.git/
+.gitignore
+.gitattributes
+
 # Logs
 *.log
+logs/
 
-# OS
+# Local development
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Project specific
+.chroma/
+.chromadb/
+/tmp/
+!/.keep
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Docker
+.dockerignore
+
+# Variaveis locais
+local_settings.py
+
+# Arquivos gerados
+*.pdf
+*.html
+
+# Diretorios de cache
+.cache/
+.mypy_cache/
+.pytest_cache/
+__pycache__/
+
+# Arquivos de configuração local
+*.local
+
+# Arquivos de ambiente de desenvolvimento
+.env.development
+.env.test
+.env.production
+
+# Arquivos de sistema operacional
 .DS_Store
 Thumbs.db
