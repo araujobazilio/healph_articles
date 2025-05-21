@@ -4,44 +4,54 @@ Este projeto utiliza o framework CrewAI para criar um sistema de agentes de IA c
 
 ## 1. Visão Geral
 
-O sistema é composto por dois agentes principais:
+O sistema é composto por três agentes principais:
 
 * **Agente Pesquisador (Health Research Specialist):** Responsável por conduzir pesquisas aprofundadas na internet sobre o tema de saúde fornecido pelo usuário. Utiliza a ferramenta DuckDuckGoSearchRun para buscar informações em fontes confiáveis.
 * **Agente Escritor (Medical Content Creator):** Responsável por analisar os dados da pesquisa e redigir um artigo informativo, bem estruturado e acessível para o público em geral.
+* **Agente Revisor (Medical Reviewer):** Responsável por revisar o artigo gerado, garantindo precisão técnica e clareza.
 
-As tarefas são executadas sequencialmente: primeiro a pesquisa, depois a escrita do artigo com base nos resultados da pesquisa.
+As tarefas são executadas sequencialmente: primeiro a pesquisa, depois a escrita do artigo com base nos resultados da pesquisa e, por fim, a revisão do conteúdo.
 
 ## 2. Pré-requisitos
 
-- Docker e Docker Compose instalados
+- Python 3.8 ou superior
 - Chave de API da OpenAI
-- Conta no Streamlit Cloud (para deploy)
+- Conta no Streamlit Cloud (para deploy opcional)
 
 ## 3. Configuração do Ambiente
 
 ### 3.1 Variáveis de Ambiente
 
-Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+Crie um arquivo `.env` na raiz do projeto com a seguinte variável:
 
 ```
 OPENAI_API_KEY=sua_chave_aqui
 ```
 
-### 3.2 Instalação Local com Docker
+### 3.2 Instalação Local
 
-1. Construa a imagem Docker:
+1. Crie e ative um ambiente virtual:
    ```bash
-   docker build -t healph-articles .
+   python -m venv venv
+   # No Windows:
+   .\venv\Scripts\activate
+   # No Linux/Mac:
+   # source venv/bin/activate
    ```
 
-2. Execute o contêiner:
+2. Instale as dependências:
    ```bash
-   docker run -p 8501:8501 --env-file .env healph-articles
+   pip install -r requirements.txt
    ```
 
-3. Acesse o aplicativo em: http://localhost:8501
+3. Execute o aplicativo:
+   ```bash
+   streamlit run streamlit_app.py
+   ```
 
-## 4. Deploy no Streamlit Cloud
+4. Acesse o aplicativo em: http://localhost:8501
+
+## 4. Deploy no Streamlit Cloud (Opcional)
 
 1. Faça push do código para um repositório no GitHub
 2. Acesse o [Streamlit Cloud](https://share.streamlit.io/)
@@ -56,49 +66,31 @@ OPENAI_API_KEY=sua_chave_aqui
 ```
 healph_articles/
 ├── .streamlit/               # Configurações do Streamlit
-│   └── config.toml
+│   ├── config.toml           # Configurações de tema e layout
+│   └── secrets.toml          # Variáveis sensíveis (não versionado)
 ├── app.py                    # Código principal da aplicação
 ├── crewai_config.py          # Configurações personalizadas do CrewAI
-├── Dockerfile                # Configuração do Docker
-├── entrypoint.sh             # Script de inicialização
 ├── requirements.txt          # Dependências do Python
 └── README.md                 # Documentação
 ```
 
 ## 6. Solução de Problemas
 
-### Erro de SQLite
-
-Se encontrar erros relacionados ao SQLite, tente:
-
-1. Reconstruir a imagem Docker:
-   ```bash
-   docker-compose build --no-cache
-   ```
-
-2. Limpar contêineres antigos:
-   ```bash
-   docker-compose down -v
-   ```
-
 ### Erros de Dependências
 
 Se encontrar erros de dependências, tente:
 
 ```bash
-docker-compose build --no-cache
+pip install --upgrade -r requirements.txt
 ```
+
+### Erros de Execução
+
+Certifique-se de que a chave da API da OpenAI está configurada corretamente no arquivo `.env`.
 
 ## 7. Licença
 
 Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## 2. Estrutura de Arquivos
-
-```
-/crewai_article_generator/
-|-- venv/                    # Ambiente virtual Python
-|-- app.py                   # Código principal da aplicação Streamlit e CrewAI
 |-- requirements.txt         # Lista de dependências Python
 |-- .env.example             # Exemplo de arquivo de variáveis de ambiente
 |-- .env                     # Arquivo de variáveis de ambiente (NÃO DEVE SER VERSIONADO)

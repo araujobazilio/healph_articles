@@ -179,76 +179,79 @@ def convert_markdown_to_pdf(markdown_content):
         st.error(f"Erro ao gerar PDF: {pdf.err}")
         return None
 
-# Interface Streamlit
-st.title("Gerador de Artigos de Saúde com IA")
+def main():
+    # Interface Streamlit
+    st.title("Gerador de Artigos de Saúde com IA")
 
-topic = st.text_input("Digite o tema de saúde para o artigo:")
+    topic = st.text_input("Digite o tema de saúde para o artigo:")
 
-if st.button("Gerar Artigo"):
-    if topic:
-        with st.spinner("Gerando artigo... Isso pode levar alguns minutos."):
-            # Inicializa agentes e tarefas
-            agents = HealthArticleAgents()
-            tasks = HealthArticleTasks()
+    if st.button("Gerar Artigo"):
+        if topic:
+            with st.spinner("Gerando artigo... Isso pode levar alguns minutos."):
+                # Inicializa agentes e tarefas
+                agents = HealthArticleAgents()
+                tasks = HealthArticleTasks()
 
-            researcher = agents.research_agent()
-            writer = agents.writing_agent()
-            reviewer = agents.review_agent() # Novo agente revisor
+                researcher = agents.research_agent()
+                writer = agents.writing_agent()
+                reviewer = agents.review_agent()
 
-            # Cria tarefas com o tema inserido
-            research_task_instance = tasks.research_task(researcher, topic)
-            
-            # A tarefa de escrita agora depende da tarefa de pesquisa (contexto)
-            writing_task_instance = tasks.writing_task(
-                agent=writer, 
-                research_data=topic, # Ainda passando o tópico, mas idealmente seria a saída da pesquisa
-                # context=[research_task_instance] # Adicionando contexto da tarefa anterior
-            )
-            writing_task_instance.context = [research_task_instance] # Garante que a tarefa de escrita use o output da pesquisa
+                # Cria tarefas com o tema inserido
+                research_task_instance = tasks.research_task(researcher, topic)
+                
+                # Configura a tarefa de escrita
+                writing_task_instance = tasks.writing_task(
+                    agent=writer, 
+                    research_data=topic
+                )
+                writing_task_instance.context = [research_task_instance]
 
-            # A tarefa de revisão depende da tarefa de escrita (contexto)
-            review_task_instance = tasks.review_task(
-                agent=reviewer, 
-                article_draft="", # Será preenchido pelo output da tarefa de escrita
-                topic_context=topic # Passando o tópico para o contexto da revisão
-                # context=[writing_task_instance] # Adicionando contexto da tarefa anterior
-            )
-            review_task_instance.context = [writing_task_instance] # Garante que a tarefa de revisão use o output da escrita
+                # Configura a tarefa de revisão
+                review_task_instance = tasks.review_task(
+                    agent=reviewer, 
+                    article_draft="",
+                    topic_context=topic
+                )
+                review_task_instance.context = [writing_task_instance]
 
-            # Cria e executa a equipe com os três agentes
-            crew = Crew(
-                agents=[researcher, writer, reviewer],
-                tasks=[research_task_instance, writing_task_instance, review_task_instance],
-                process=Process.sequential, # As tarefas serão executadas uma após a outra
-                verbose=True # Fornece logs detalhados da execução da equipe
-            )
-            
-            try:
-                crew_output = crew.kickoff()
-                article_text = ""
-                if crew_output and hasattr(crew_output, 'raw') and crew_output.raw:
-                    article_text = str(crew_output.raw) # Garante que é uma string
-                elif isinstance(crew_output, str):
-                    article_text = crew_output # Caso a saída já seja uma string (menos comum para CrewOutput)
-                else:
-                    st.error("Não foi possível extrair o texto do resultado da equipe.")
-                    # Você pode querer parar a execução aqui ou definir article_text como uma mensagem de erro
+                # Cria e executa a equipe com os três agentes
+                crew = Crew(
+                    agents=[researcher, writer, reviewer],
+                    tasks=[research_task_instance, writing_task_instance, review_task_instance],
+                    process=Process.sequential,
+                    verbose=True
+                )
+                
+                try:
+                    crew_output = crew.kickoff()
+                    article_text = ""
+                    if crew_output and hasattr(crew_output, 'raw') and crew_output.raw:
+                        article_text = str(crew_output.raw)
+                    elif isinstance(crew_output, str):
+                        article_text = crew_output
+                    else:
+                        st.error("Não foi possível extrair o texto do resultado da equipe.")
+                        return
 
-                st.subheader("Artigo Gerado:")
-                if article_text: # Só exibe se houver texto
-                    st.markdown(article_text)
+                    st.subheader("Artigo Gerado:")
+                    if article_text:
+                        st.markdown(article_text)
+                        
+                        # Adiciona botão de download para PDF
+                        pdf_bytes = convert_markdown_to_pdf(article_text)
+                        if pdf_bytes:
+                            st.download_button(
+                                label="Baixar Artigo em PDF",
+                                data=pdf_bytes,
+                                file_name=f"{topic.replace(' ', '_')}_artigo.pdf",
+                                mime="application/pdf"
+                            )
+                except Exception as e:
+                    st.error(f"Ocorreu um erro: {e}")
+        else:
+            st.error("Por favor, insira um tema para gerar o artigo.")
 
-                    # Adiciona botão de download para PDF
-                    pdf_bytes = convert_markdown_to_pdf(article_text)
-                    if pdf_bytes:
-                        st.download_button(
-                            label="Baixar Artigo em PDF",
-                            data=pdf_bytes,
-                            file_name=f"{topic.replace(' ', '_')}_artigo.pdf",
-                            mime="application/pdf"
-                        )
-            except Exception as e:
-                st.error(f"Ocorreu um erro: {e}")
-    else:
-        st.error("Por favor, insira um tema para gerar o artigo.")
+# Ponto de entrada principal
+if __name__ == "__main__":
+    main()
 

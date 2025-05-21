@@ -1,33 +1,28 @@
 # Dependências principais
-streamlit
-python-dotenv
+streamlit>=1.31.0
+python-dotenv>=1.0.0
 
 # CrewAI e dependências
-crewai
-langchain-community
-langchain-openai
+crewai>=0.11.1
+langchain-community>=0.0.14
+langchain-openai>=0.0.5
 
 # Processamento de texto
-markdown
-markdown-it-py
-mdurl
+markdown>=3.4.0
+markdown-it-py>=2.2.0
+mdurl>=0.1.0
 
 # OpenAI
-tiktoken
-openai
+tiktoken>=0.5.0
+openai>=1.3.0
 
 # Processamento de dados
-numpy
-pydantic
+numpy>=1.24.0
+pydantic>=2.0.0
 
 # PDF e formatação
-xhtml2pdf
-reportlab
+xhtml2pdf>=0.2.12
+reportlab>=4.0.0
 
 # Outras dependências
-requests
-urllib3
-
-# Dependências de build
-setuptools
-wheel
+requests>=2.31.0

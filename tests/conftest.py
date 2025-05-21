@@ -1,5 +1,4 @@
 """Configurações do pytest para os testes do projeto."""
-import os
 import sys
 from pathlib import Path
 
@@ -15,10 +14,6 @@ def env_setup(monkeypatch):
     # Configurações padrão para testes
     monkeypatch.setenv("OPENAI_API_KEY", "test-key")
     monkeypatch.setenv("STREAMLIT_SERVER_PORT", "8501")
-    
-    # Configurações para evitar o uso de recursos externos durante os testes
-    monkeypatch.setenv("CHROMA_DB_IMPL", "duckdb+parquet")
-    monkeypatch.setenv("CHROMA_DB_PATH", "/tmp/chroma-test")
 
 # Fixture para o cliente de teste do Streamlit
 @pytest.fixture
