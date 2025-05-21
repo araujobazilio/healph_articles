@@ -1,0 +1,8 @@
+streamlit
+python-dotenv
+crewai
+crewai[tools]
+langchain-community
+langchain-openai
+xhtml2pdf
+markdown
