@@ -2,6 +2,10 @@
 import streamlit as st
 import os
 from dotenv import load_dotenv # Importa load_dotenv
+
+# Importa a configuração personalizada antes de importar o CrewAI
+import crewai_config  # noqa: F401
+
 from crewai import Agent, Task, Crew, Process
 from langchain_openai import ChatOpenAI # Importa ChatOpenAI
 from langchain_community.tools import DuckDuckGoSearchRun
