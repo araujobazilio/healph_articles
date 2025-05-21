@@ -9,7 +9,7 @@ langchain-openai>=0.0.5
 
 # Processamento de texto
 markdown>=3.4.0
-markdown-it-py>=2.2.0
+markdown-it-py>=2.2.0,<3.0.0  # Versão compatível com rich<14.0.0
 mdurl>=0.1.0
 
 # OpenAI
@@ -28,10 +28,11 @@ reportlab>=4.0.0
 requests>=2.31.0
 duckduckgo-search>=3.8.6
 
+# Dependências com versões fixas para evitar conflitos
+rich>=13.7.0,<14.0.0  # Compatível com instructor
+instructor>=1.8.2
+
 # Evitar instalação de dependências opcionais problemáticas
 chromadb==0.0.0  # Evita instalação do ChromaDB
 faiss-cpu==0.0.0  # Evita instalação do FAISS
 sentence-transformers==0.0.0  # Evita instalação do Sentence Transformers
-
-# Configuração para evitar dependências opcionais
---no-deps

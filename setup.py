@@ -5,22 +5,39 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 # Dependências principais
 install_requires = [
+    # Dependências principais
     "streamlit>=1.31.0",
     "python-dotenv>=1.0.0",
-    "crewai>=0.11.1",
+    
+    # CrewAI e dependências
+    "crewai>=0.11.1,<0.12.0",
     "langchain-community>=0.0.14",
     "langchain-openai>=0.0.5",
+    
+    # Processamento de texto
     "markdown>=3.4.0",
-    "markdown-it-py>=2.2.0",
+    "markdown-it-py>=2.2.0,<3.0.0",  # Compatível com rich<14.0.0
     "mdurl>=0.1.0",
+    
+    # OpenAI
     "tiktoken>=0.5.0",
     "openai>=1.3.0",
+    
+    # Processamento de dados
     "numpy>=1.24.0",
     "pydantic>=2.0.0",
+    
+    # PDF e formatação
     "xhtml2pdf>=0.2.12",
     "reportlab>=4.0.0",
+    
+    # Outras dependências
     "requests>=2.31.0",
-    "duckduckgo-search>=3.8.6"
+    "duckduckgo-search>=3.8.6",
+    
+    # Dependências com versões fixas para evitar conflitos
+    "rich>=13.7.0,<14.0.0",  # Compatível com instructor
+    "instructor>=1.8.2"
 ]
 
 # Configuração para evitar instalação de dependências opcionais
